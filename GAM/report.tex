@@ -1,0 +1,271 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{natbib}
+\usepackage{fullpage}
+\usepackage{graphicx} %If you want to include postscript graphics
+\usepackage{wrapfig} 
+\usepackage{verbatim} 
+\usepackage[tableposition=top]{caption}
+\usepackage{ifthen}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs} % curly letters
+\usepackage{url}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\begin{document}
+
+\title{Survey Index Estimation and Simulation using EBS Survey Data.}
+\author{Casper W. Berg}
+\date{\today}
+
+\maketitle
+\section{Model}
+
+Survey indices are calculated using the methodology described in \cite{berg2014evaluation} and the \texttt{surveyIndex} package \citep{surveyIndexPackage}, although the response variable is CPUE in weight rather than numbers-at-age and we consider time-varying spatial effects.
+
+
+The following equation describes the model:
+\begin{align}
+  \log(\mu_i) =& \mathrm{Year(i)} + f_{1}(\mathrm{sx}_i,\mathrm{sy}_i) 
+           +  f_{2}(\mathrm{Year}_i,\mathrm{sx}_i,\mathrm{sy}_i) \\
+           & + f_{3}(\mathrm{depth}_i) + f_{4}(\mathrm{\log(temperature}_i + 3)) \label{eqn:catch}
+\end{align}
+
+where $\mu_i$ is the expected value of the CPUE in weight of the $i$th haul.
+The spatial effects are described by a high resolution time-invariant average distribution ($f_1$) and independent yearly deviations from that average ($f_2$). The maximal basis dimension of $f_1$ and $f_2$ are set to 376 and 50 per year respectively, and the smoothing penalty and spline basis is the same for all years in $f_2$. The last two splines ($f_3$ and $f_4$) describe the effect of bottom depth and gear temperature. The latter was added 3 and log-transformed because preliminary runs suggested that
+must variation occurred on a narrow interval at the coldest end of the observed interval. The chosen transformation stretches this interval out such that the resulting splines are more smooth and can be fitted using fewer knots while ensuring that numbers are positive before taking the logarithm.
+All splines are thin plate splines with shrinkage. 
+
+\section{Results}
+
+\subsection{Arrowtooth Flounder}
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-001"}.png}
+\caption{}
+%%\label{fig:1}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-002"}.png}
+\caption{}
+%%\label{fig:2}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-003"}.png}
+\caption{}
+%%\label{fig:3}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-004"}.png}
+\caption{}
+%%\label{fig:4}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-005"}.png}
+\caption{}
+%%\label{fig:5}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"arrowtooth flounder-006"}.png}
+\caption{}
+%%\label{fig:7}
+\end{figure}
+
+\clearpage
+
+\subsection{Pacific cod}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-001"}.png}
+\caption{}
+%%\label{fig:1}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-002"}.png}
+\caption{}
+%%\label{fig:2}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-003"}.png}
+\caption{}
+%%\label{fig:3}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-004"}.png}
+\caption{}
+%%\label{fig:4}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-005"}.png}
+\caption{}
+%%\label{fig:5}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"Pacific cod-006"}.png}
+\caption{}
+%%\label{fig:7}
+\end{figure}
+
+\clearpage
+
+\subsection{Walleye Pollock}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-001"}.png}
+\caption{}
+%%\label{fig:1}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-002"}.png}
+\caption{}
+%%\label{fig:2}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-003"}.png}
+\caption{}
+%%\label{fig:3}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-004"}.png}
+\caption{}
+%%\label{fig:4}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-005"}.png}
+\caption{}
+%%\label{fig:5}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"walleye pollock-006"}.png}
+\caption{}
+%%\label{fig:7}
+\end{figure}
+
+\clearpage
+
+\subsection{Yellowfin Sole}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-001"}.png}
+\caption{}
+%%\label{fig:1}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-002"}.png}
+\caption{}
+%%\label{fig:2}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-003"}.png}
+\caption{}
+%%\label{fig:3}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-004"}.png}
+\caption{}
+%%\label{fig:4}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-005"}.png}
+\caption{}
+%%\label{fig:5}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-006"}.png}
+\caption{}
+%%\label{fig:7}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{{"yellowfin sole-007"}.png}
+\caption{}
+%%\label{fig:8}
+\end{figure}
+
+\clearpage
+\section{Appendix}
+\subsection{Retrospective analyses}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{retros.png}
+\caption{}
+%%\label{retros}
+\end{figure}
+
+\subsection{Simulation and re-estimation}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=1.0\textwidth]{simest.png}
+\caption{}
+%%\label{simest}
+\end{figure}
+
+\clearpage
+\subsection{Model summaries}
+\begin{scriptsize}
+\verbatiminput{summaries.txt}
+\end{scriptsize}
+\clearpage
+\subsection{gam.check output}
+\begin{scriptsize}
+\verbatiminput{gamcheck.txt}
+\end{scriptsize}
+\clearpage
+\bibliographystyle{plain}
+\bibliography{report}
+
+
+
+\end{document}
