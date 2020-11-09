@@ -3,15 +3,16 @@ library(sf)
 library(sp)
 library(FNN)
 library(gstat) 
-library(raster)
+#library(raster)
 
 
 # Load Data ---------------------------------------------------------------
-load(here::here("data","EBSbundle.rdata"))
+load(here::here("data","EBSbundle_1_2.rdata"))
+source(here::here("R","make_IDW.R"))
 #coldPool <- read.csv(here::here("data","cpa_areas2019.csv"))
 
 crsString <- "+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
-speciesCode <- 10110
+speciesCode <- 21740
 
 predictGrid <- EBSbundle$EBSfullPredict %>%
   mutate(LAT_m= LAT, LON_m=LONG) %>%
@@ -24,8 +25,8 @@ speciesData <- filter(EBSbundle$EBSspp, SPECIES_CODE==speciesCode) %>%
            remove = F)  %>%
   st_transform(crs = crsString) 
   
-# plot(predictGrid)
-# plot(st_geometry(atf), add=T)
+# plot(st_geometry(predictGrid))
+# plot(st_geometry(speciesData), add=T)
 
 IDW_cpue <- list()
 IDW_sd <- list()
@@ -67,12 +68,14 @@ for (yr in seq_along(years)) {
     
 }
 
-test_cpue <- st_join(speciesData[speciesData$YEAR==years[3],],IDW_cpue[[3]], join = st_nearest_feature ) %>%
-  mutate(cpueDiff = wCPUE - var1.pred)
-test_var <- st_join(speciesData[speciesData$YEAR==years[3],],IDW_var[[3]], join = st_nearest_feature ) 
-#hauljoin -2922 has highest variance in 2007
 
-qqplot(speciesData[speciesData$YEAR==years[22],]$wCPUE, IDW_cpue[[22]]$var1.pred)
+# IDW Testing -------------------------------------------------------------
+t = 5 # Test year index
+test_cpue <- st_join(speciesData[speciesData$YEAR==years[t],],IDW_cpue[[t]], join = st_nearest_feature ) %>%
+  mutate(cpueDiff = wCPUE - var1.pred)
+hist(test_cpue$cpueDiff)
+
+qqplot(speciesData[speciesData$YEAR==years[t],]$wCPUE, IDW_cpue[[t]]["BOTTOM_DEPTH">0,]$var1.pred)
 abline(0,1)
 
 # Run for each species to get local variance of 4 NN

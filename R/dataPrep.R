@@ -51,7 +51,7 @@ projection(predictLatLong) <- CRS("+proj=longlat +datum=NAD83 +no_defs")
 
 
 dat_new <- dplyr::filter(EBSspp, SPECIES_CODE == 21740) %>%
-  dplyr::select("YEAR", "GEAR_TEMPERATURE",  "HAULJOIN","LATITUDE"=START_LATITUDE, "LONGITUDE"=START_LONGITUDE)
+  dplyr::select("YEAR", "GEAR_TEMPERATURE",  "HAULJOIN","LATITUDE"=LAT_DEGREES, "LONGITUDE"=LON_DEGREES)
 
 dat_new <- dat_new[!duplicated(dat_new),]
 coordinates(dat_new) <- ~ LONGITUDE + LATITUDE
@@ -124,7 +124,7 @@ EBSspp <- EBSspp %>%
 # 
 # for (y in unique(EBSdata$YEAR)) {
 #   EBSyear <- dplyr::filter(EBS$haul, CRUISEJOIN %in% EBS$cruise[EBS$cruise$YEAR==y,"CRUISEJOIN"] & !is.na(GEAR_TEMPERATURE)) %>%
-#     sf::st_as_sf(coords = c(x = "START_LONGITUDE", y = "START_LATITUDE"), crs = sf::st_crs(4269)) %>% 
+#     sf::st_as_sf(coords = c(x = "LON_DEGREES", y = "LAT_DEGREES"), crs = sf::st_crs(4269)) %>% 
 #     sf::as_Spatial() %>%
 #     sp::spTransform(crs(EBSstrata))
 #   
@@ -162,7 +162,8 @@ EBSspp <- EBSspp %>%
 # # EBSpredict[testRow,]
 
 EBSfullPredict <- bottomTemps %>%
-  rename(LONG=x, LAT=y, Area_m = layer) 
+  rename(LONG=x, LAT=y, Area_m = layer) %>%
+  mutate(predict_id = row_number())
 
 # eliminate depths outside of survey range
 EBSpredict <- EBSfullPredict %>%
@@ -192,7 +193,7 @@ projection(EBSpredictSP) <- projection(EBSstrata)
 
 
 readme <- "EBSspp - catch, effort, and environmental data for the EBS survey, years 1995-2019 for 4 spp (cod, pollock, yellowfin,
-            arrowtooth). Use wCPUE, units are kg/ha, and START_LONGITUDE/START_LATITUDE for station location.  EBSstrata - sf 
+            arrowtooth). Use wCPUE, units are kg/ha, and LON_DEGREES/LAT_DEGREES for station location.  EBSstrata - sf 
             package, polygons for the EBS sampling frame. EBSpredict prediction dataframe reduced by a factor of 4 from Kot's original grid
             EBSpredictSF- sf dataframe (geometry=sfc_POLYGON) with the prediction grid (including Kotaro's extrapolated depths and bottom 
             temperatures for each year. EBS - this is the raw RACE database for 1995-2019, saved for reproducibility."
