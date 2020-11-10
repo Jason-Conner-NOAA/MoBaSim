@@ -6,7 +6,7 @@
 #' Takes Survey data and a spatial grid (sf) as inputs and outputs simple IDW.
 
 
-make_IDW <- function(data, var_name, year, input_grid, idp = 8) {
+make_IDW <- function(data, var_name, year, input_grid, idp = 6, nmax = 8) {
   ## Should probably add tests for CRS, extent, var_name exists
   sp_yr <- dplyr::filter(data, YEAR==year)
 
