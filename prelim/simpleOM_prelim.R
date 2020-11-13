@@ -12,7 +12,7 @@ source(here::here("R","make_IDW.R"))
 #coldPool <- read.csv(here::here("data","cpa_areas2019.csv"))
 
 crsString <- "+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
-speciesCode <- 10110
+speciesCode <- 21720
 
 predictGrid <- EBSbundle$EBSfullPredict %>%
   mutate(LAT_m= LAT, LON_m=LONG) %>%
@@ -81,7 +81,7 @@ names(IDW_all) <- years
 saveRDS(IDW_all, file = here::here("EOM",paste0("IDW_all_",speciesCode,".RDS")))
 
 # IDW Testing -------------------------------------------------------------
-t = 1 # Test year index
+t = 5 # Test year index
 test_cpue <- st_join(speciesData[speciesData$YEAR==years[t],],IDW_all[[t]], join = st_nearest_feature ) %>%
   mutate(cpueDiff = wCPUE - predictCPUE)
 hist(test_cpue$cpueDiff)

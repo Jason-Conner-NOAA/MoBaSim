@@ -3,3 +3,5 @@ Folder created by Jason Conner (jason.conner@noaa.gov)
 
 Empirical Operating Model (EOM)
 Survey abundance operating model that uses IDW to create surfaces for probability of presence, CPUE, and 2 standard deviations of CPUE. These surfaces can be sampled to simulate a population.
+
+Preliminary results were moved to /data, however production results will be saved in /EOM.
