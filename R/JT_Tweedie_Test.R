@@ -6,6 +6,8 @@ context("Testing examples")
 test_that("Tweedie gives identical results to mgcv::gam(.) ", {
   skip_on_travis()
   library(mgcv)
+  library(FishStatsUtils)
+  library(VAST)
   
   #library(tweedie)  # Installed from locally from tweedie_2.3.2.tar.gz here: https://cran.r-project.org/web/packages/tweedie/index.html
   # Simulate
