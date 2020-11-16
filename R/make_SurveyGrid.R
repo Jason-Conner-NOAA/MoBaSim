@@ -12,7 +12,7 @@ require(sf)
 load(here::here("data","EBSbundle_1_2.rdata"))
 
 # Ensure there is a shapefiles subdirectory
-dir.create(here::here("data","shapefiles"))
+dir.create(here::here("shapefiles"))
 
 # Import EBS polygon with no strata
 EBStotal <- EBSbundle$EBSstrata
@@ -51,7 +51,7 @@ ggplot() +
   geom_sf(data = grid, color="red", fill = NA)
 
 st_write(grid,
-         dsn = here::here("data","shapefiles"),
+         dsn = here::here("shapefiles"),
          layer = paste0("SystematicGrid_",sqSize),
          driver = "ESRI Shapefile",
          append = F,
@@ -59,7 +59,7 @@ st_write(grid,
 )
 
 st_write(sim$"2009",
-         dsn = here::here("data","shapefiles"),
+         dsn = here::here("shapefiles"),
          layer = paste0("cod_sim_2009"),
          driver = "ESRI Shapefile"
 )
@@ -116,5 +116,5 @@ saveRDS(grid_index, here::here("data","grid_index.rds"))
 
 
 # write.csv(EBSbundle$EBSfullPredict,
-#          here::here("data","shapefiles","PredictGrid.csv")
+#          here::here("shapefiles","PredictGrid.csv")
 # )
