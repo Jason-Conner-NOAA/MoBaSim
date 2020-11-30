@@ -29,7 +29,7 @@ EBSproj2LongLat<-function(x,y){
     return(as.data.frame(res))
 }
 
-load("EBSbundle.rdata")
+load("../data/EBSbundle_1_2.rdata")
 
 ###################
 ## Prepare data
@@ -56,10 +56,10 @@ for(fac in factors) d[,fac]=as.factor(d[,fac])
 ## Add and rename some variables (e.g. names 'Year' and 'ctime' are needed for 'surveyIndex')
 d$Year = d$YEAR
 d$Ship = d$VESSEL
-d$lat = d$START_LATITUDE
-d$lon = d$START_LONGITUDE
+d$lat = d$LAT_DEGREES
+d$lon = d$LON_DEGREES
 ## data lon,lat => grid projection
-ll = LongLat2EBSproj( EBSbundle$EBSspp$START_LONGITUDE,EBSbundle$EBSspp$START_LATITUDE)
+ll = LongLat2EBSproj( EBSbundle$EBSspp$LON_DEGREES,EBSbundle$EBSspp$LAT_DEGREES)
 d$sx = (ll$X - mx)/1000
 d$sy = (ll$Y - my)/1000
 d$ctime <- as.numeric(as.character(d$Year))
@@ -71,6 +71,12 @@ d$TimeShotHour = d$hour + d$minute/60
 d$timeOfYear <- (d$month - 1) * 1/12 + (d$day - 1)/365
 d$Gear = "dummy"
 d$Quarter = "2"
+
+## no NA's allowed
+stopifnot(all(!is.na(d$GEAR_TEMPERATURE)))
+stopifnot(all(!is.na(d$BOTTOM_DEPTH)))
+d = subset(d, YEAR %in% YEARS)
+d = subset(d, !is.na(GEAR_TEMPERATURE))
 
 dall = d
 
@@ -126,7 +132,7 @@ specLevels = levels(dall$COMMON_NAME)
 for(SPECIES in specLevels){
     cat("Fitting ",SPECIES,"\n")
         
-    fittimes[[ SPECIES ]] <- system.time( models[[ SPECIES ]] <- getSurveyIdx(ds[[ SPECIES ]],1,myids=NULL,predD=allpd,cutOff=0,fam="Tweedie",modelP=fm,gamma=1,control=list(trace=TRUE,maxit=20)) )
+    fittimes[[ SPECIES ]] <- system.time( models[[ SPECIES ]] <- getSurveyIdx(ds[[ SPECIES ]],1,myids=NULL,predD=allpd,cutOff=0,fam="Tweedie",modelP=fm,gamma=1,CIlevel=0.95,nBoot=4000,control=list(trace=TRUE,maxit=20)) )
 
 }
 
