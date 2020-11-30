@@ -216,7 +216,7 @@ EBSbundle <- list(readme = readme,
                   EBSpredictSP = EBSpredictSP,
                   EBS = EBS
 )
-save(EBSbundle, file='EBSbundle.rdata')
+save(EBSbundle, file=here::here("data","EBSbundle_truncate_5_years.rdata"))
 
 df <- data.frame(st_drop_geometry(EBSbundle$EBSpredict))
 write.table(df,"EBSpredict.txt", sep=',', row.names=F)
