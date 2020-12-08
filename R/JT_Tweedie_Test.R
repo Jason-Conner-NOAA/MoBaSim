@@ -2,13 +2,14 @@
 # And example see: https://github.com/ss3sim/ss3sim/tree/master/tests/testthat
 context("Testing examples")
 
+library(VAST)
+library(FishStatsUtils)
+
 # Tweedie distribution
 test_that("Tweedie gives identical results to mgcv::gam(.) ", {
   skip_on_travis()
   library(mgcv)
-  library(FishStatsUtils)
-  library(VAST)
-  
+
   #library(tweedie)  # Installed from locally from tweedie_2.3.2.tar.gz here: https://cran.r-project.org/web/packages/tweedie/index.html
   # Simulate
   n_obs = 50
@@ -97,7 +98,7 @@ test_that("Covariate effects when using a smoother gives identical results to mg
                            a_i = rep(0.01, nrow(pollock_data) ),
                            covariate_data = covariate_data,
                            X2_formula = ~ Temp + I(Temp^2),
-                           # working_dir = multispecies_example_path,
+                           working_dir = here::here("VAST"),
                            getsd = FALSE,
                            Use_REML = TRUE )
   p_hat = 1 + plogis( fit_tweedie$ParHat$logSigmaM[1,1] )

@@ -10,13 +10,13 @@ library(raster)
 # Set Directories ---------------------------------------------------------
 Date = Sys.Date()
 Run = 1
-runDir = paste0('VAST',Date,'_V1')
+runDir = paste0('VAST_',Date,'_V1')
 dir.create(here::here(runDir))
 setwd(here::here(runDir))
 
 
 # Load Data ---------------------------------------------------------------
-  load(here::here("data","EBSbundle.rdata"))
+  load(here::here("data","EBSbundle_1_2.rdata"))
   #coldPool <- read.csv(here::here("data","cpa_areas2019.csv"))
 
 
@@ -26,13 +26,13 @@ species <- 21740
 Version = get_latest_version( package="VAST" )
 Region= "User"
 n_x = 376   # Specify number of stations (a.k.a. "knots")
-FieldConfig = matrix( c(0,0,"IID",0, 
-                        1,1,"IID","Identity"), 
-                      ncol=2, nrow=4, 
-                      dimnames=list(c("Omega","Epsilon","Beta","Epsilon_year"),
+FieldConfig = matrix( c(0,0,"IID", 
+                        1,0,"IID"), 
+                      ncol=2, nrow=3, 
+                      dimnames=list(c("Omega","Epsilon","Beta"),
                                     c("Component_1","Component_2"))
 )
-RhoConfig = c("Beta1"=4, "Beta2"=4, "Epsilon1"=0, "Epsilon2"=4)
+RhoConfig = c("Beta1"=3, "Beta2"=0, "Epsilon1"=0, "Epsilon2"=0)
 OverdispersionConfig = c("Eta1"=0, "Eta2"=0)
 ObsModel = c(10,2) #c(2,1)
 Options =  c("Calculate_Range"=FALSE, "Calculate_effective_area"=FALSE, "treat_nonencounter_as_zero"=TRUE )
@@ -137,11 +137,11 @@ plot( fit )
 for( rI in 1:1 ){
   Keep = FALSE
   while( Keep==FALSE ){
-    Data_sim = fit$tmb_list$Obj$simulate( par=Par, complete=TRUE )
+    Data_sim = fit$tmb_list$Obj$simulate( par=fit$tmb_list$Obj$env$last.par.best, complete=TRUE )
     Enc_t = tapply( Data_sim$b_i, INDEX=fit$data_frame$t_i, FUN=function(vec){mean(vec>0)})
     if( all(Enc_t>0 & Enc_t<1) ) Keep = TRUE
   }
-  save(Data_sim, file=paste0(DateFile,"Data_sim",rI,".RData"))
+  save(Data_sim, file=paste0(runDir,"Data_sim",rI,".RData"))
 }
 
 # Loop through EM

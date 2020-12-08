@@ -115,7 +115,7 @@ ds = lapply(ds,function(x) { x[[2]]$Nage <- matrix(x$wCPUE,ncol=1); colnames(x[[
 # dtest = lapply(ds,function(x) { x[[2]]$Nage <- matrix(x$wCPUE,ncol=1);x } )
 
 # reduce to one species for testing JC
-ds = ds[[1]]
+# ds = ds[[1]]
 
 ##############
 ## Fitting
