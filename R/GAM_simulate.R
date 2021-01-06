@@ -29,7 +29,8 @@ EBSproj2LongLat<-function(x,y){
     return(as.data.frame(res))
 }
 
-load(here::here("data","EBSbundle_1_2.rdata"))
+# load(here::here("data","EBSbundle_1_2.rdata"))
+load(here::here("data","EBSbundle_truncate_5_years.rdata"))
 
 ###################
 ## Prepare data

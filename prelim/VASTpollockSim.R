@@ -42,7 +42,7 @@ BiasCorr = TRUE
 Purpose = "index2"
 FineScale=TRUE
 TestFit = FALSE
-MaxCells = 2000
+MaxCells = Inf
 
 
 # Data Formatting ---------------------------------------------------------
@@ -134,12 +134,11 @@ plot( fit )
 # Par[c("logkappa1","logkappa2")] = Par[c("logkappa1","logkappa2")] - log(2)
 
 # Loop through OM
-for( rI in 1:1 ){
+for( rI in 1:10 ){
   Keep = FALSE
   while( Keep==FALSE ){
     Data_sim = fit$tmb_list$Obj$simulate( par=fit$tmb_list$Obj$env$last.par.best, complete=TRUE )
-    Enc_t = tapply( Data_sim$b_i, INDEX=fit$data_frame$t_i, FUN=function(vec){mean(vec>0)})
-    if( all(Enc_t>0 & Enc_t<1) ) Keep = TRUE
+    if( range(Data_sim$D_gct)[1] >= 0 ) Keep = TRUE
   }
   save(Data_sim, file=paste0(runDir,"Data_sim",rI,".RData"))
 }
